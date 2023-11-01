@@ -140,20 +140,9 @@ class DB:
         self.cur.execute("UPDATE tbl_cars (make, model) VALUES (?,?,?) WHERE reg = ?",(rqmake, rqmodel, rqreg))
         self.conn.commit()
 
-
-
-# Reversing this could be tricky, why?
-#Is there a case for having a currently_owned flag in the cars table?
-
-#Use the class to create a database and use the .openDb() and .clseDb() methods
 mydatabase = DB()
 mydatabase.openDb()
 mydatabase.insertCustomer("Murphy", "Tom",0,"Staff")
 customers = mydatabase.viewCustomers()
 print(customers)
 mydatabase.closeDb()
-
-""" Consider the required functionality of the database.  What other methods can you
-put in place to automate the use of the database? """
-
-#Use your methods to add some test data to the database.
