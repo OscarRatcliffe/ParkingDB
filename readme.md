@@ -21,3 +21,14 @@ A basic database for a parking lot built using python and SQL lite
 - [ ] Avaliable spaces (Outer join query)
 - [ ] Output sticker
 - [ ] Revenue in given time
+
+
+Key: NMA  North Main, NOF  North Overflow, NME North Main Electric, NMD North Main Disabled, SMA South Main, SSX South Secure.
+
+Terms to be named by starting year and Term Reference:
+2023AU1  First Autumn Half Term in academic year starting September 2023
+2023AU2  Second Autumn Half Term in academic year starting September 2023
+2023SP1 First Spring Half Term in academic year starting September 2023
+2023SP2 Second Spring Half Term in academic year starting September 2023
+2023SU1 First Summer Half Term in academic year starting September 2023
+2023SU2 Second Summer Half Term in academic year starting September 2023
