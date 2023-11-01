@@ -132,6 +132,16 @@ class DB:
         self.cur.execute("UPDATE tbl_owners SET current = 0 WHERE reg = ? AND current = 1",(rqreg,))
         self.conn.commit()
 
+    def mark_current(self, rqreg):
+        self.cur.execute("UPDATE tbl_owners SET current = 1 WHERE reg = ? AND current = 0",(rqreg,))
+        self.conn.commit()
+
+    def insertCar(self, rqreg, rqmake, rqmodel):
+        self.cur.execute("UPDATE tbl_cars (make, model) VALUES (?,?,?) WHERE reg = ?",(rqmake, rqmodel, rqreg))
+        self.conn.commit()
+
+
+
 # Reversing this could be tricky, why?
 #Is there a case for having a currently_owned flag in the cars table?
 
