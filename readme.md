@@ -13,11 +13,11 @@ A basic database for a parking lot built using python and SQL lite
 - [x] Add term
 
 ## Regular features    
-- [] Make a sale
-- [] Update car details
-- [] Mark car as current again
+- [ ] Make a sale
+- [ ] Update car details
+- [ ] Mark car as current again
 
 ### Later
-- [] Avaliable spaces (Outer join query)
-- [] Output sticker
-- [] Revenue in given time
+- [ ] Avaliable spaces (Outer join query)
+- [ ] Output sticker
+- [ ] Revenue in given time
