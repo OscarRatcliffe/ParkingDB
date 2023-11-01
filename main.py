@@ -127,7 +127,6 @@ class DB:
         rows = self.cur.fetchall()
         return rows
     
-#Removing a car? Best to mark it as not currently owned!
     def mark_Notcurrent(self, rqreg):
         self.cur.execute("UPDATE tbl_owners SET current = 0 WHERE reg = ? AND current = 1",(rqreg,))
         self.conn.commit()
