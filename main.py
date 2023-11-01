@@ -97,6 +97,16 @@ class DB:
         self.cur.execute("INSERT INTO tbl_customers (surname, forename, disabled, type) VALUES (?,?,?,?)",
                          (rqsurname  , rqforename, rqdisability, rqtype))
         self.conn.commit()
+    
+    def insertSpace(self, rqspace, rqdisabled):
+        self.cur.execute("INSERT INTO tbl_spaces (space, disabled) VALUES (?,?)",
+                         (rqspace  , rqdisabled))
+        self.conn.commit()
+
+    def insertTerm(self, rqterm, rqstaff_price, rqstudent_price, rqdisabled_price):
+        self.cur.execute("INSERT INTO tbl_terms (term, staff_price, student_price, disabled_price) VALUES (?,?,?,?)",
+                         (rqterm, rqstaff_price, rqstudent_price, rqdisabled_price))
+        self.conn.commit()
         
     def insertCar(self, rqreg, rqmake, rqmodel):
         self.cur.execute("INSERT INTO tbl_cars (reg, make, model) VALUES (?,?,?)",(rqreg, rqmake, rqmodel))
