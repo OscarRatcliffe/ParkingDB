@@ -16,6 +16,7 @@ A basic database for a parking lot built using python and SQL lite
 - [ ] Make a sale
 - [x] Update car details
 - [x] Mark car as current again
+- [ ] Import spaces.txt into the DB
 
 ### Later
 - [ ] Avaliable spaces (Outer join query)
