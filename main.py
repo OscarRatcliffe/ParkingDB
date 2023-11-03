@@ -142,6 +142,17 @@ class DB:
 mydatabase = DB()
 mydatabase.openDb()
 mydatabase.insertCustomer("Murphy", "Tom",0,"Staff")
+
+# -------------
+# Import spaces
+# -------------
+f = open("data/spaces_updated.txt", "r")
+
+for i in f:
+    mydatabase.insertSpace(i, 0)
+
+f.close()
+
 customers = mydatabase.viewCustomers()
 print(customers)
 mydatabase.closeDb()
