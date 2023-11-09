@@ -1,4 +1,5 @@
 import sqlite3
+import csv
 
 class DB:
     def __init__(self):
@@ -135,9 +136,9 @@ class DB:
         self.cur.execute("UPDATE tbl_owners SET current = 1 WHERE reg = ? AND current = 0",(rqreg,))
         self.conn.commit()
 
-    def insertCar(self, rqreg, rqmake, rqmodel):
-        self.cur.execute("UPDATE tbl_cars (make, model) VALUES (?,?,?) WHERE reg = ?",(rqmake, rqmodel, rqreg))
-        self.conn.commit()
+    # def insertCar(self, rqreg, rqmake, rqmodel):
+    #     self.cur.execute("UPDATE tbl_cars (make, model) VALUES (?,?,?) WHERE reg = ?",(rqmake, rqmodel, rqreg))
+    #     self.conn.commit()
 
 mydatabase = DB()
 mydatabase.openDb()
@@ -149,9 +150,18 @@ mydatabase.insertCustomer("Murphy", "Tom",0,"Staff")
 f = open("data/spaces_updated.txt", "r")
 
 for i in f:
-    mydatabase.insertSpace(i, 0)
+    mydatabase.insertSpace(str(i), 0)
 
 f.close()
+
+# --------------
+# Importing cars
+# --------------
+
+# with open("data/starting_data.csv", newline="") as csvfile:
+#     reader = csv.reader(csvfile)
+#     for row in reader:
+#         mydatabase.insertCar(row[8], row[9], row[10])
 
 customers = mydatabase.viewCustomers()
 print(customers)
