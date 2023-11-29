@@ -1,11 +1,11 @@
 import PySimpleGUI as sg
 import os.path
 import importStarting
-import dbClass
+from dbClass import DB 
     
 fileExists = os.path.isfile('parking.db')
 
-mydatabase = dbClass.DB
+mydatabase = DB()
 mydatabase.openDb()
 
 # --------------------

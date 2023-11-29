@@ -85,3 +85,7 @@ class DB:
     def makeSale(self, rqsold_term, rqsold_space, rqcustomer_sold_id, rqprice_paid):
         self.cur.execute("INSERT INTO tbl_sales (sold_term, sold_space, customer_sold_id, price_paid) VALUES (?,?,?,?)",(rqsold_term, rqsold_space, rqcustomer_sold_id, rqprice_paid))
         self.conn.commit()
+
+    def newOwner(self, rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car):
+        self.cur.execute("INSERT INTO tbl_owners (car_owner, car_reg, customer_sold_id, current_car) VALUES (?,?,?,?)",(rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car))
+        self.conn.commit()

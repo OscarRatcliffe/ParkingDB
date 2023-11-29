@@ -32,6 +32,7 @@ def importStartingData(fileExists, mydatabase):
             knownCustomers = []
             knownSales = []
             customerID = 0
+            ownerID = 0
 
             reader = csv.reader(csvfile)
             for row in reader:
@@ -54,6 +55,10 @@ def importStartingData(fileExists, mydatabase):
                     pass
                 else:  
                     mydatabase.insertCar(row[8], row[9], row[10])
+
+                    mydatabase.newOwner(ownerID, row[8], customerID, 1)
+
+                    ownerID += 1
 
                 # Calc price paid
                 if row[4] == "Y":
