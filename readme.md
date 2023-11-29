@@ -12,6 +12,7 @@ A basic database for a parking lot built using python and SQL lite
 - [ ] Finish adding DB methods
 - [ ] Create GUI menu
 - [ ] Create all GUI elements
+- [ ] Refactor (Preferably in TS + react)
 
 # Methods to add    
 ## Pre existing    
