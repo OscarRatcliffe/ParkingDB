@@ -8,7 +8,7 @@ A basic database for a parking lot built using python and SQL lite
     - [x] Spaces
     - [x] Terms
     - [ ] Owners
-    - [ ] Sales
+    - [x] Sales
 - [ ] Finish adding DB methods
 - [ ] Create GUI menu
 - [ ] Create all GUI elements
