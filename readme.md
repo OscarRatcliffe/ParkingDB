@@ -1,6 +1,18 @@
 # Comp sci database task    
 A basic database for a parking lot built using python and SQL lite
 
+# TODO
+- [ ] Add all starting data
+    - [x] Cars
+    - [x] Customers
+    - [x] Spaces
+    - [x] Terms
+    - [ ] Owners
+    - [ ] Sales
+- [ ] Finish adding DB methods
+- [ ] Create GUI menu
+- [ ] Create all GUI elements
+
 # Methods to add    
 ## Pre existing    
 - [x] Insert customer
