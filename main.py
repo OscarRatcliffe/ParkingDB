@@ -146,21 +146,30 @@ mydatabase.openDb()
 # -------------
 # Import spaces
 # -------------
-# f = open("data/spaces_updated.txt", "r")
+f = open("data/spaces_updated.txt", "r")
 
-# for i in f:
-#     mydatabase.insertSpace(str(i), 0)
+for i in f:
+    mydatabase.insertSpace(str(i), 0)
 
-# f.close()
+f.close()
 
 # --------------
 # Importing cars
 # --------------
 
-# with open("data/starting_data.csv", newline="") as csvfile:
-#     reader = csv.reader(csvfile)
-#     for row in reader:
-#         mydatabase.insertCar(row[8], row[9], row[10])
+with open("data/starting_data.csv", newline="") as csvfile:
+
+    knownCars = []
+
+    reader = csv.reader(csvfile)
+    for row in reader:
+
+        if row[7] in knownCars:
+            pass
+        else:  
+            mydatabase.insertCar(row[7], row[9], row[10])
+
+        knownCars.append(row[7])
 
 sg.theme('DarkAmber') 
 
