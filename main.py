@@ -1,5 +1,6 @@
 import sqlite3
 import csv
+import PySimpleGUI as sg
 
 class DB:
     def __init__(self):
@@ -142,17 +143,15 @@ class DB:
 
 mydatabase = DB()
 mydatabase.openDb()
-mydatabase.insertCustomer("Murphy", "Tom",0,"Staff")
-
 # -------------
 # Import spaces
 # -------------
-f = open("data/spaces_updated.txt", "r")
+# f = open("data/spaces_updated.txt", "r")
 
-for i in f:
-    mydatabase.insertSpace(str(i), 0)
+# for i in f:
+#     mydatabase.insertSpace(str(i), 0)
 
-f.close()
+# f.close()
 
 # --------------
 # Importing cars
@@ -166,3 +165,25 @@ f.close()
 customers = mydatabase.viewCustomers()
 print(customers)
 mydatabase.closeDb()
+
+sg.theme('DarkAmber') 
+
+layout = [  [sg.Text("Reg Number"), sg.Input('', enable_events=True, key='Reg', expand_x=True)],
+          [sg.Text("Make"), sg.Input('', enable_events=True, key='Make', expand_x=True)],
+          [sg.Text("Model"), sg.Input('', enable_events=True, key='Model', expand_x=True)],
+            [sg.Button('Submit'), sg.Button('exit')] ]
+
+
+window = sg.Window('Window Title', layout)
+
+# Event loop
+while True:
+    event, values = window.read()
+    print(values)
+    if event == sg.WIN_CLOSED or event == 'exit':
+        break
+    if event == 'Submit':
+        print(values.values)
+
+window.close()
+
