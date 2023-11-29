@@ -1,6 +1,7 @@
 import sqlite3
 import csv
 import PySimpleGUI as sg
+import os.path
 
 class DB:
     def __init__(self):
@@ -95,9 +96,9 @@ class DB:
         rows = self.cur.fetchall()
         return rows
     
-    def insertCustomer(self, rqsurname  , rqforename, rqdisability, rqtype ):
-        self.cur.execute("INSERT INTO tbl_customers (surname, forename, disabled, type) VALUES (?,?,?,?)",
-                         (rqsurname  , rqforename, rqdisability, rqtype))
+    def insertCustomer(self, rqsurname  , rqforename, rqdisability, rqtype, rqcurrent):
+        self.cur.execute("INSERT INTO tbl_customers (surname, forename, disabled, type, current) VALUES (?,?,?,?,?)",
+                         (rqsurname  , rqforename, rqdisability, rqtype, rqcurrent))
         self.conn.commit()
     
     def insertSpace(self, rqspace, rqdisabled):
@@ -129,47 +130,107 @@ class DB:
         rows = self.cur.fetchall()
         return rows
     
-    def mark_Notcurrent(self, rqreg):
+    def markNotcurrent(self, rqreg):
         self.cur.execute("UPDATE tbl_owners SET current = 0 WHERE reg = ? AND current = 1",(rqreg,))
         self.conn.commit()
 
-    def mark_current(self, rqreg):
+    def markCurrent(self, rqreg):
         self.cur.execute("UPDATE tbl_owners SET current = 1 WHERE reg = ? AND current = 0",(rqreg,))
         self.conn.commit()
 
-    # def insertCar(self, rqreg, rqmake, rqmodel):
-    #     self.cur.execute("UPDATE tbl_cars (make, model) VALUES (?,?,?) WHERE reg = ?",(rqmake, rqmodel, rqreg))
-    #     self.conn.commit()
+    def makeSale(self, rqsold_term, rqsold_space, rqcustomer_sold_id, rqprice_paid):
+        self.cur.execute("INSERT INTO tbl_sales (sold_term, sold_space, customer_sold_id, price_paid) VALUES (?,?,?,?)",(rqsold_term, rqsold_space, rqcustomer_sold_id, rqprice_paid))
+        self.conn.commit()
+    
+fileExists = os.path.isfile('parking.db')
 
 mydatabase = DB()
 mydatabase.openDb()
+
 # -------------
 # Import spaces
 # -------------
-f = open("data/spaces_updated.txt", "r")
 
-for i in f:
-    mydatabase.insertSpace(str(i), 0)
+print(fileExists)
 
-f.close()
+if fileExists == False:
 
-# --------------
-# Importing cars
-# --------------
+    print("Adding starting data")
 
-with open("data/starting_data.csv", newline="") as csvfile:
+    f = open("data/spaces_updated.txt", "r")
 
-    knownCars = []
+    for i in f:
+        mydatabase.insertSpace(str(i), 0)
 
-    reader = csv.reader(csvfile)
-    for row in reader:
+    f.close()
 
-        if row[7] in knownCars:
-            pass
-        else:  
-            mydatabase.insertCar(row[7], row[9], row[10])
+    # --------------
+    # Importing cars
+    # --------------
+    with open("data/terms.csv", newline="") as csvfile:
 
-        knownCars.append(row[7])
+        reader = csv.reader(csvfile)
+        for row in reader:
+            mydatabase.insertTerm(row[0], row[1], row[2], row[3])
+            currentTerm = row[0] # Assume lastest term is current
+            staffPrice = row[1]
+            studentPrice = row[2]
+            disabledPrice = row[3]
+
+    with open("data/starting_data.csv", newline="") as csvfile:
+
+        knownCars = []
+        knownCustomers = []
+        knownSales = []
+        customerID = 0
+
+        reader = csv.reader(csvfile)
+        for row in reader:
+
+            tempCustomerKey = row[1]+row[2]
+
+            if tempCustomerKey in knownCustomers:
+                pass
+            else:
+                if row[4] == "N":
+                    mydatabase.insertCustomer(row[1], row[2], 0, row[3], 1)
+                else:
+                    mydatabase.insertCustomer(row[1], row[2], 1, row[3], 1)
+            
+                customerID += 1
+                
+                knownCustomers.append(tempCustomerKey) 
+
+            if row[8] in knownCars:
+                pass
+            else:  
+                mydatabase.insertCar(row[8], row[9], row[10])
+
+            # Calc price paid
+            if row[4] == "Y":
+                pricePaid = disabledPrice
+            
+            else: 
+
+                if row[3] == "Student":
+                    pricePaid = studentPrice
+
+                else:
+                    pricePaid = staffPrice
+
+            tempSalesKey = currentTerm + row[7]
+
+            if tempSalesKey in knownSales:
+                pass
+
+            else:
+                mydatabase.makeSale(currentTerm, row[7], customerID, pricePaid)
+
+                knownSales.append(tempSalesKey)
+
+            knownCars.append(row[8])
+    
+
 
 sg.theme('DarkAmber') 
 
