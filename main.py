@@ -162,28 +162,25 @@ mydatabase.openDb()
 #     for row in reader:
 #         mydatabase.insertCar(row[8], row[9], row[10])
 
-customers = mydatabase.viewCustomers()
-print(customers)
-mydatabase.closeDb()
-
 sg.theme('DarkAmber') 
 
-layout = [  [sg.Text("Reg Number"), sg.Input('', enable_events=True, key='Reg', expand_x=True)],
-          [sg.Text("Make"), sg.Input('', enable_events=True, key='Make', expand_x=True)],
-          [sg.Text("Model"), sg.Input('', enable_events=True, key='Model', expand_x=True)],
+# Window setup
+layout = [  [sg.Text("Reg Number"), sg.InputText(expand_x=True)],
+          [sg.Text("Make"), sg.InputText(expand_x=True)],
+          [sg.Text("Model"), sg.InputText(expand_x=True)],
             [sg.Button('Submit'), sg.Button('exit')] ]
 
 
-window = sg.Window('Window Title', layout)
+window = sg.Window('Parking DB', layout)
 
 # Event loop
 while True:
     event, values = window.read()
-    print(values)
     if event == sg.WIN_CLOSED or event == 'exit':
         break
     if event == 'Submit':
-        print(values.values)
+        mydatabase.insertCar(values[0], values[1], values[2])
+        print("Car added")
 
+mydatabase.closeDb()
 window.close()
-
