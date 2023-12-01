@@ -15,11 +15,15 @@ A basic database for a parking lot built using python and SQL lite
     - [x] Add car
     - [x] Add customer
     - [ ] Add spaces
+    - [ ] Add term
+    - [ ] Make Sale
     - [ ] Update car details
     - [ ] Update customer details
-    - [ ] Change car owner
+    - [ ] Change / assign car owner
     - [ ] View DB info
-- [ ] Refactor (Preferably in TS + react)
+- [ ] Unit tests
+- [ ] Refactor 
+    - [ ] GuiElements
 
 # Methods to add    
 ## Pre existing    
