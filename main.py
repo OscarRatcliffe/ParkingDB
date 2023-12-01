@@ -24,7 +24,7 @@ sg.theme('DarkAmber')
 # -----------
 
 layout = [  [sg.Text("Please pick an option")],
-            [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('exit')]
+            [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('Add space'), sg.Button('exit')]
         ]
 
 
@@ -41,6 +41,9 @@ while True:
 
     if event == 'Add customer':
         GuiElements.insertCustomerGUI(sg, mydatabase)
+
+    if event == 'Add space':
+        GuiElements.insertSpaceGUI(sg, mydatabase)
 
 mydatabase.closeDb()
 window.close()
