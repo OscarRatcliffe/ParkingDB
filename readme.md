@@ -2,6 +2,7 @@
 A basic database for a parking lot built using python and SQL lite
 
 # TODO
+### Beta release v0.1
 - [x] Add all starting data
     - [x] Cars
     - [x] Customers
@@ -17,10 +18,18 @@ A basic database for a parking lot built using python and SQL lite
     - [x] Add spaces
     - [x] Add term
     - [x] Make Sale
+    - [ ] Change / assign car owner
+
+---
+### Beta release v0.2
+
     - [ ] Update car details
     - [ ] Update customer details
-    - [ ] Change / assign car owner
     - [ ] View DB info
+
+---
+### Stable release v1.0
+
 - [ ] Unit tests
 - [ ] Refactor 
     - [ ] GuiElements
