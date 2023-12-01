@@ -83,6 +83,43 @@ def insertSpaceGUI(sg, mydatabase):
 
 
 
+def makeSaleGui(sg, mydatabase):
+
+    names = []
+    spaces = []
+
+    for i in mydatabase.viewCustomers():
+        names.append(f'{i[2]} {i[1]}')
+
+    for i in mydatabase.viewSpaces():
+        spaces.append(i[0])
+
+    for i in mydatabase.viewTerms():
+        termPrices = [i[1], i[2], i[3]] # Overwritting so that only latest version is used
+
+    layout = [  [sg.Text("Space sold"), sg.Combo(spaces, expand_x=True)],
+                [sg.Text("Customer ID"), sg.Combo(names, expand_x=True)],
+                [sg.Text("Price paid"), sg.Combo(termPrices, expand_x=True)], 
+                [sg.Button('Submit')] 
+            ]
+
+    window = sg.Window('Parking DB', layout)
+
+    # Event loop
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if event == 'Submit':
+            try:
+                mydatabase.insertTerm(values[0], int(values[1]), int(values[2]), int(values[3]))
+                sg.popup("Term added")
+
+            except (sqlite3.IntegrityError):
+                sg.popup("Skipping value - Already exists in DB")
+
+
 def insertTermGUI(sg, mydatabase):
 
     layout = [  [sg.Text("TermID"), sg.InputText(expand_x=True)],

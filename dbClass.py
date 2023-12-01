@@ -40,6 +40,16 @@ class DB:
         rows = self.cur.fetchall()
         return rows
     
+    def viewSpaces(self):
+        self.cur.execute("SELECT * FROM tbl_spaces")
+        rows = self.cur.fetchall()
+        return rows
+    
+    def viewTerms(self):
+        self.cur.execute("SELECT * FROM tbl_terms")
+        rows = self.cur.fetchall()
+        return rows
+    
     def insertCustomer(self, rqsurname  , rqforename, rqdisability, rqtype, rqcurrent):
         self.cur.execute("INSERT INTO tbl_customers (surname, forename, disabled, type, current) VALUES (?,?,?,?,?)",
                          (rqsurname  , rqforename, rqdisability, rqtype, rqcurrent))
