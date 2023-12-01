@@ -137,7 +137,7 @@ def makeSaleGui(sg, mydatabase):
                     lastTerm = i[0]
 
                 mydatabase.makeSale(lastTerm, values[0], int(CustomerID), int(values[2]))
-                sg.popup("Term added")
+                sg.popup("Sale made")
 
             except (sqlite3.IntegrityError):
                 sg.popup("Skipping value - Already exists in DB")
