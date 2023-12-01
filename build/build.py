@@ -61,7 +61,6 @@ FOREIGN KEY (car_reg) REFERENCES tbl_cars(reg)
 """)        
     
 import sqlite3
-import createTables
 
 class DB:
     def __init__(self):
@@ -80,7 +79,7 @@ class DB:
     # Create tables
     # -------------
 
-        createTables.createTables(self)
+        createTables(self)
 
         self.conn.commit() 
         
@@ -109,6 +108,11 @@ class DB:
     
     def viewTerms(self):
         self.cur.execute("SELECT * FROM tbl_terms")
+        rows = self.cur.fetchall()
+        return rows
+    
+    def viewOwners(self):
+        self.cur.execute("SELECT * FROM tbl_owners")
         rows = self.cur.fetchall()
         return rows
     
@@ -161,7 +165,6 @@ class DB:
     def newOwner(self, rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car):
         self.cur.execute("INSERT INTO tbl_owners (car_owner, car_reg, customer_sold_id, current_car) VALUES (?,?,?,?)",(rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car))
         self.conn.commit()
-
 
 import csv
 import PySimpleGUI as sg
@@ -249,15 +252,14 @@ def importStartingData(fileExists, mydatabase):
 
                 knownCars.append(row[8])
 
-
 import sqlite3
 
 def insertCarGUI(sg, mydatabase):
     
     layout = [  [sg.Text("Reg Number"), sg.InputText(expand_x=True)],
-            [sg.Text("Make"), sg.InputText(expand_x=True)],
-            [sg.Text("Model"), sg.InputText(expand_x=True)],
-            [sg.Button('Submit')] 
+                [sg.Text("Make"), sg.InputText(expand_x=True)],
+                [sg.Text("Model"), sg.InputText(expand_x=True)],
+                [sg.Button('Submit')] 
             ]
 
 
@@ -389,7 +391,7 @@ def makeSaleGui(sg, mydatabase):
                     lastTerm = i[0]
 
                 mydatabase.makeSale(lastTerm, values[0], int(CustomerID), int(values[2]))
-                sg.popup("Term added")
+                sg.popup("Sale made")
 
             except (sqlite3.IntegrityError):
                 sg.popup("Skipping value - Already exists in DB")
@@ -421,11 +423,61 @@ def insertTermGUI(sg, mydatabase):
                 sg.popup("Skipping value - Already exists in DB")
 
 
+def assignOwnerGUI(sg, mydatabase):
+
+    carRegs = []
+    names = []
+
+    customerQuery = mydatabase.viewCustomers()
+
+    for i in customerQuery:
+        names.append(i[2]+ " " + i[1])
+
+    for i in mydatabase.viewCarsall():
+        carRegs.append(i[0])
+
+    for i in mydatabase.viewOwners():
+        lastOwnerID = i[0];
+
+    layout = [  [sg.Text("Car reg"), sg.Combo(carRegs, expand_x=True)],
+                [sg.Text("Customer"), sg.Combo(names, expand_x=True)],
+                [sg.Button('Submit')] 
+            ]
+
+    window = sg.Window('Parking DB', layout)
+
+    # Event loop
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if event == 'Submit':
+
+            # --------------------
+            # Find index of values
+            # --------------------
+
+            for i in customerQuery:
+                
+                comboreturnexpected = i[2]+ " " + i[1]
+
+                if values[1] == comboreturnexpected:
+                    CustomerID = i[0]
+
+            # ---------
+            # Add to DB
+            # ---------
+
+            try:
+                mydatabase.newOwner(lastOwnerID + 1, values[0], int(CustomerID), 1)
+                sg.popup("Owner Assigned")
+
+            except (sqlite3.IntegrityError):
+                sg.popup("Skipping value - Already exists in DB")
+
 import PySimpleGUI as sg
 import os.path
-import importStarting
-import GuiElements
-from dbClass import DB 
     
 fileExists = os.path.isfile('../data/parking.db')
 
@@ -438,7 +490,7 @@ mydatabase.openDb()
 
 print(fileExists)
 
-importStarting.importStartingData(fileExists, mydatabase)
+importStartingData(fileExists, mydatabase)
 
 sg.theme('DarkAmber') 
 
@@ -448,7 +500,7 @@ sg.theme('DarkAmber')
 
 layout = [  [sg.Text("Please pick an option")],
             [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('Add space'), sg.Button('Add term')],
-            [sg.Button('Make sale')],
+            [sg.Button('Make sale'), sg.Button('Assign owner')],
             [sg.Button('exit')]
         ]
 
@@ -462,19 +514,22 @@ while True:
         break
 
     if event == 'Add car':
-        GuiElements.insertCarGUI(sg, mydatabase)
+        insertCarGUI(sg, mydatabase)
 
     if event == 'Add customer':
-        GuiElements.insertCustomerGUI(sg, mydatabase)
+        insertCustomerGUI(sg, mydatabase)
 
     if event == 'Add space':
-        GuiElements.insertSpaceGUI(sg, mydatabase)
+        insertSpaceGUI(sg, mydatabase)
 
     if event == 'Add term':
-        GuiElements.insertTermGUI(sg, mydatabase)
+        insertTermGUI(sg, mydatabase)
 
     if event == 'Make sale':
-        GuiElements.makeSaleGui(sg, mydatabase)
+        makeSaleGui(sg, mydatabase)
+
+    if event == 'Assign owner':
+        assignOwnerGUI(sg, mydatabase)
 
 mydatabase.closeDb()
 window.close()
