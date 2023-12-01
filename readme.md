@@ -11,13 +11,13 @@ A basic database for a parking lot built using python and SQL lite
     - [x] Owners
     - [x] Sales
 - [x] Create GUI menu
-- [ ] Create all GUI elements
+- [x] Create all GUI elements
     - [x] Add car
     - [x] Add customer
     - [x] Add spaces
     - [x] Add term
     - [x] Make Sale
-    - [ ] Assign car owner
+    - [x] Assign car owner
 
 ### Beta release v0.2
 
