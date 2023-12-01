@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import os.path
 import importStarting
+import GuiElements
 from dbClass import DB 
     
 fileExists = os.path.isfile('parking.db')
@@ -18,11 +19,13 @@ importStarting.importStartingData(fileExists, mydatabase)
 
 sg.theme('DarkAmber') 
 
-# Window setup
-layout = [  [sg.Text("Reg Number"), sg.InputText(expand_x=True)],
-          [sg.Text("Make"), sg.InputText(expand_x=True)],
-          [sg.Text("Model"), sg.InputText(expand_x=True)],
-            [sg.Button('Submit'), sg.Button('exit')] ]
+# -----------
+# Main window
+# -----------
+
+layout = [  [sg.Text("Please pick an option")],
+            [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('exit')]
+        ]
 
 
 window = sg.Window('Parking DB', layout)
@@ -32,9 +35,12 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'exit':
         break
-    if event == 'Submit':
-        mydatabase.insertCar(values[0], values[1], values[2])
-        print("Car added")
+
+    if event == 'Add car':
+        GuiElements.insertCarGUI(sg, mydatabase)
+
+    if event == 'Add customer':
+        GuiElements.insertCustomerGUI(sg, mydatabase)
 
 mydatabase.closeDb()
 window.close()
