@@ -1,3 +1,5 @@
+import sqlite3
+
 def insertCarGUI(sg, mydatabase):
     
     layout = [  [sg.Text("Reg Number"), sg.InputText(expand_x=True)],
@@ -16,8 +18,12 @@ def insertCarGUI(sg, mydatabase):
             break
 
         if event == 'Submit':
-            mydatabase.insertCar(values[0], values[1], values[2])
-            print("Car added")
+            try:
+                mydatabase.insertCar(values[0], values[1], values[2])
+                sg.popup("Car added")
+
+            except (sqlite3.IntegrityError):
+                sg.popup("Skipping value - Already exists in DB")
 
 
 
@@ -43,8 +49,12 @@ def insertCustomerGUI(sg, mydatabase):
             break
 
         if event == 'Submit':
-            mydatabase.insertCustomer(values[0], values[1], int(values[3]) ,values[2], 1)
-            print("Customer added")
+            try:
+                mydatabase.insertCustomer(values[0], values[1], int(values[3]) ,values[2], 1)
+                sg.popup("Customer added")
+            
+            except (sqlite3.IntegrityError):
+                sg.popup("Skipping value - Already exists in DB")
 
 
 
@@ -64,5 +74,9 @@ def insertSpaceGUI(sg, mydatabase):
             break
 
         if event == 'Submit':
-            mydatabase.insertSpace(values[0], int(values[1]))
-            print("Space added")
+            try:
+                mydatabase.insertSpace(values[0], int(values[1]))
+                sg.popup("Space added")
+
+            except (sqlite3.IntegrityError):
+                sg.popup("Skipping value - Already exists in DB")
