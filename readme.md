@@ -16,7 +16,7 @@ A basic database for a parking lot built using python and SQL lite
     - [x] Add customer
     - [x] Add spaces
     - [x] Add term
-    - [ ] Make Sale
+    - [x] Make Sale
     - [ ] Update car details
     - [ ] Update customer details
     - [ ] Change / assign car owner
