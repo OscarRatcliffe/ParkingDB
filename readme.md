@@ -17,13 +17,14 @@ A basic database for a parking lot built using python and SQL lite
     - [x] Add spaces
     - [x] Add term
     - [x] Make Sale
-    - [ ] Change / assign car owner
+    - [ ] Assign car owner
 
 ### Beta release v0.2
 
 - [ ] Finish adding DB methods
 - [ ] Create all GUI elements
     - [ ] Update car details
+    - [ ] Update car owner details
     - [ ] Update customer details
     - [ ] View DB info
 

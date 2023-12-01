@@ -50,6 +50,11 @@ class DB:
         rows = self.cur.fetchall()
         return rows
     
+    def viewOwners(self):
+        self.cur.execute("SELECT * FROM tbl_owners")
+        rows = self.cur.fetchall()
+        return rows
+    
     def insertCustomer(self, rqsurname  , rqforename, rqdisability, rqtype, rqcurrent):
         self.cur.execute("INSERT INTO tbl_customers (surname, forename, disabled, type, current) VALUES (?,?,?,?,?)",
                          (rqsurname  , rqforename, rqdisability, rqtype, rqcurrent))
