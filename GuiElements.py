@@ -88,8 +88,10 @@ def makeSaleGui(sg, mydatabase):
     names = []
     spaces = []
 
-    for i in mydatabase.viewCustomers():
-        names.append(f'{i[2]} {i[1]}')
+    customerQuery = mydatabase.viewCustomers()
+
+    for i in customerQuery:
+        names.append(i[2]+ " " + i[1])
 
     for i in mydatabase.viewSpaces():
         spaces.append(i[0])
@@ -113,7 +115,28 @@ def makeSaleGui(sg, mydatabase):
 
         if event == 'Submit':
             try:
-                mydatabase.insertTerm(values[0], int(values[1]), int(values[2]), int(values[3]))
+
+                # --------------------
+                # Find index of values
+                # --------------------
+
+                for i in customerQuery:
+                    
+                    comboreturnexpected = i[2]+ " " + i[1]
+
+                    if values[1] == comboreturnexpected:
+                        CustomerID = i[0]
+
+                # ---------
+                # Add to DB
+                # ---------
+
+                lastTerm = ""
+
+                for i in mydatabase.viewTerms():
+                    lastTerm = i[0]
+
+                mydatabase.makeSale(lastTerm, values[0], int(CustomerID), int(values[2]))
                 sg.popup("Term added")
 
             except (sqlite3.IntegrityError):
