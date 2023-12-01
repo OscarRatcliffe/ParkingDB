@@ -24,7 +24,8 @@ sg.theme('DarkAmber')
 # -----------
 
 layout = [  [sg.Text("Please pick an option")],
-            [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('Add space'), sg.Button('exit')]
+            [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('Add space')],
+            [sg.Button('exit')]
         ]
 
 
