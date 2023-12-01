@@ -10,7 +10,6 @@ A basic database for a parking lot built using python and SQL lite
     - [x] Terms
     - [x] Owners
     - [x] Sales
-- [ ] Finish adding DB methods
 - [x] Create GUI menu
 - [ ] Create all GUI elements
     - [x] Add car
@@ -22,6 +21,7 @@ A basic database for a parking lot built using python and SQL lite
 
 ### Beta release v0.2
 
+- [ ] Finish adding DB methods
 - [ ] Create all GUI elements
     - [ ] Update car details
     - [ ] Update customer details
