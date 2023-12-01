@@ -8,7 +8,7 @@ class DB:
     # Init db
     # -------
 
-        self.conn = sqlite3.connect("parking.db", detect_types=sqlite3.PARSE_DECLTYPES |
+        self.conn = sqlite3.connect("../data/parking.db", detect_types=sqlite3.PARSE_DECLTYPES |
                                     sqlite3.PARSE_COLNAMES)
         self.cur = self.conn.cursor()
         self.cur.execute("PRAGMA foreign_keys = ON")
@@ -29,7 +29,7 @@ class DB:
     # ------------
 
     def openDb(self):
-        self.conn = sqlite3.connect("parking.db")
+        self.conn = sqlite3.connect("../data/parking.db")
         self.cur = self.conn.cursor()
 
     def closeDb(self):

@@ -4,7 +4,7 @@ import importStarting
 import GuiElements
 from dbClass import DB 
     
-fileExists = os.path.isfile('parking.db')
+fileExists = os.path.isfile('../data/parking.db')
 
 mydatabase = DB()
 mydatabase.openDb()
