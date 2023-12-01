@@ -23,6 +23,7 @@ A basic database for a parking lot built using python and SQL lite
 ---
 ### Beta release v0.2
 
+- [ ] Create all GUI elements
     - [ ] Update car details
     - [ ] Update customer details
     - [ ] View DB info
