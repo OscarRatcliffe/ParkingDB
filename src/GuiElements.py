@@ -221,3 +221,27 @@ def assignOwnerGUI(sg, mydatabase):
 
             except (sqlite3.IntegrityError):
                 sg.popup("Skipping value - Already exists in DB")
+
+def updateCarDetailsGUI(sg, mydatabase):  # TODO
+
+    carRegs = []
+
+    for i in mydatabase.viewCarsall():
+        carRegs.append(i[0])
+
+
+    layout = [  [sg.Text("Car reg"), sg.Combo(carRegs, expand_x=True)],
+                [sg.Text("Car makmodele"), sg.InputText(expand_x=True)],
+                [sg.Button('Update')] 
+            ]
+
+    window = sg.Window('Parking DB', layout)
+
+    # Event loop
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if event == 'Update':
+            pass
