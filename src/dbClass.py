@@ -104,3 +104,7 @@ class DB:
     def newOwner(self, rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car):
         self.cur.execute("INSERT INTO tbl_owners (car_owner, car_reg, customer_sold_id, current_car) VALUES (?,?,?,?)",(rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car))
         self.conn.commit()
+
+    def UpdateCar(self, rqreg, rqmake, rqmodel):
+        self.cur.execute("UPDATE tbl_cars SET make = ?, model = ? WHERE reg = ?",(rqmake, rqmodel, rqreg))
+        self.conn.commit()

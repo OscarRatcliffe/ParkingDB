@@ -225,13 +225,20 @@ def assignOwnerGUI(sg, mydatabase):
 def updateCarDetailsGUI(sg, mydatabase):  # TODO
 
     carRegs = []
+    carMakes = []
+    carModels = []
 
-    for i in mydatabase.viewCarsall():
+    allCars = mydatabase.viewCarsall()
+
+    for i in allCars:
         carRegs.append(i[0])
+        carMakes.append(i[1])
+        carModels.append(i[2])
 
 
-    layout = [  [sg.Text("Car reg"), sg.Combo(carRegs, expand_x=True)],
-                [sg.Text("Car makmodele"), sg.InputText(expand_x=True)],
+    layout = [  [sg.Text("Car reg"), sg.Combo(carRegs, expand_x=True,key="CarRegs", enable_events=True)],
+                [sg.Text("Car make"), sg.InputText(expand_x=True, key="CarMake")],
+                [sg.Text("Car model"), sg.InputText(expand_x=True, key="CarModel")],
                 [sg.Button('Update')] 
             ]
 
@@ -243,5 +250,12 @@ def updateCarDetailsGUI(sg, mydatabase):  # TODO
         if event == sg.WIN_CLOSED:
             break
 
+        if event == 'CarRegs':
+            carRegIndex = carRegs.index(values["CarRegs"])
+
+            window["CarMake"].update(carMakes[carRegIndex])
+            window["CarModel"].update(carModels[carRegIndex])
+
         if event == 'Update':
-            pass
+            mydatabase.UpdateCar(values["CarRegs"], values["CarMake"], values["CarModel"])
+            sg.popup("Car updated")
