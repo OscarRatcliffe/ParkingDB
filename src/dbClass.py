@@ -108,3 +108,8 @@ class DB:
     def UpdateCar(self, rqreg, rqmake, rqmodel):
         self.cur.execute("UPDATE tbl_cars SET make = ?, model = ? WHERE reg = ?",(rqmake, rqmodel, rqreg))
         self.conn.commit()
+    
+    def UpdateCustomer(self, rqsurname, rqforename, rqdisability, rqtype, rqcurrent):
+        self.cur.execute("UPDATE tbl_customers disabled = ?, type = ?, current = ? WHERE surname = ? AND forename = ?",(rqdisability, rqtype, rqcurrent, rqsurname, rqforename))
+        self.conn.commit()
+        

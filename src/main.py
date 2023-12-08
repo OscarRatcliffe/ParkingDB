@@ -26,7 +26,7 @@ sg.theme('DarkAmber')
 layout = [  [sg.Text("Please pick an option")],
             [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('Add space'), sg.Button('Add term')],
             [sg.Button('Make sale'), sg.Button('Assign owner')],
-            [sg.Button('Update car')],
+            [sg.Button('Update car'), sg.Button('Update customer')],
             [sg.Button('Exit')]
         ]
 
@@ -59,6 +59,9 @@ while True:
 
     if event == 'Update car':
         GuiElements.updateCarDetailsGUI(sg, mydatabase)
+    
+    if event == 'Update customer':
+        GuiElements.updateCustomerDetailsGUI(sg, mydatabase)
 
 mydatabase.closeDb()
 window.close()
