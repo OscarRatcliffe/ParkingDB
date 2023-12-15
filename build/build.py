@@ -1,3 +1,6 @@
+import sqlite3
+import createTables
+
 def createTables(self):
 
     self.cur.execute(
@@ -59,8 +62,6 @@ FOREIGN KEY (car_owner) REFERENCES tbl_customers(customer_id),
 FOREIGN KEY (car_reg) REFERENCES tbl_cars(reg)    
 )
 """)        
-    
-import sqlite3
 
 class DB:
     def __init__(self):
@@ -79,7 +80,7 @@ class DB:
     # Create tables
     # -------------
 
-        createTables(self)
+        createTables.createTables(self)
 
         self.conn.commit() 
         
@@ -164,6 +165,18 @@ class DB:
 
     def newOwner(self, rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car):
         self.cur.execute("INSERT INTO tbl_owners (car_owner, car_reg, customer_sold_id, current_car) VALUES (?,?,?,?)",(rqowner, rqcar_reg, rqcustomer_sold_id, rqcurrent_car))
+        self.conn.commit()
+
+    def UpdateCar(self, rqreg, rqmake, rqmodel):
+        self.cur.execute("UPDATE tbl_cars SET make = ?, model = ? WHERE reg = ?",(rqmake, rqmodel, rqreg))
+        self.conn.commit()
+    
+    def UpdateCustomer(self, rqsurname, rqforename, rqdisability, rqtype, rqcurrent):
+        self.cur.execute("UPDATE tbl_customers SET disabled = ?, type = ?, current = ? WHERE surname = ? AND forename = ?",(rqdisability, rqtype, rqcurrent, rqsurname, rqforename))
+        self.conn.commit()
+        
+    def UpdateOwner(self, rqcar_reg, rqcustomer_sold_id, rqcurrent_car):
+        self.cur.execute("UPDATE tbl_owners SET car_reg = ?, current_car = ? WHERE customer_sold_id = ?",(rqcar_reg, rqcurrent_car, rqcustomer_sold_id))
         self.conn.commit()
 
 import csv
@@ -252,14 +265,15 @@ def importStartingData(fileExists, mydatabase):
 
                 knownCars.append(row[8])
 
+
 import sqlite3
 
 def insertCarGUI(sg, mydatabase):
     
     layout = [  [sg.Text("Reg Number"), sg.InputText(expand_x=True)],
-                [sg.Text("Make"), sg.InputText(expand_x=True)],
-                [sg.Text("Model"), sg.InputText(expand_x=True)],
-                [sg.Button('Submit')] 
+            [sg.Text("Make"), sg.InputText(expand_x=True)],
+            [sg.Text("Model"), sg.InputText(expand_x=True)],
+            [sg.Button('Submit')] 
             ]
 
 
@@ -476,8 +490,137 @@ def assignOwnerGUI(sg, mydatabase):
             except (sqlite3.IntegrityError):
                 sg.popup("Skipping value - Already exists in DB")
 
+def updateCarDetailsGUI(sg, mydatabase): 
+
+    carRegs = []
+    carMakes = []
+    carModels = []
+
+    allCars = mydatabase.viewCarsall()
+
+    for i in allCars:
+        carRegs.append(i[0])
+        carMakes.append(i[1])
+        carModels.append(i[2])
+
+
+    layout = [  [sg.Text("Car reg"), sg.Combo(carRegs, expand_x=True,key="CarRegs", enable_events=True)],
+                [sg.Text("Car make"), sg.InputText(expand_x=True, key="CarMake")],
+                [sg.Text("Car model"), sg.InputText(expand_x=True, key="CarModel")],
+                [sg.Button('Update')] 
+            ]
+
+    window = sg.Window('Parking DB', layout)
+
+    # Event loop
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if event == 'CarRegs':
+            carRegIndex = carRegs.index(values["CarRegs"])
+
+            window["CarMake"].update(carMakes[carRegIndex])
+            window["CarModel"].update(carModels[carRegIndex])
+
+        if event == 'Update':
+            mydatabase.UpdateCar(values["CarRegs"], values["CarMake"], values["CarModel"])
+            sg.popup("Car updated")
+
+
+def updateCustomerDetailsGUI(sg, mydatabase):  
+
+    Name = []
+    disability = []
+    type = []
+    current = []
+
+    allCars = mydatabase.viewCustomers()
+
+    for i in allCars:
+        Name.append([i[1], i[2]])
+        disability.append(i[3])
+        type.append(i[4])
+        current.append(i[5])
+
+
+    layout = [  [sg.Text("Name"), sg.Combo(Name, expand_x=True,key="Name", enable_events=True)],
+                [sg.Text("Type"), sg.Combo(["Student", "Staff"], expand_x=True, key="Type")],
+                [sg.Checkbox("Disabled?", expand_x=True, key="Disability")], 
+                [sg.Checkbox("Current?", expand_x=True, key="Current")], 
+                [sg.Button('Update')] 
+            ]
+
+    window = sg.Window('Parking DB', layout)
+
+    # Event loop
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if event == 'Name':
+            nameIndex = Name.index(values["Name"])
+
+            window["Disability"].update(disability[nameIndex])
+            window["Type"].update(type[nameIndex])
+            window["Current"].update(current[nameIndex])
+
+        if event == 'Update':
+            mydatabase.UpdateCustomer(values["Name"][0], values["Name"][1], int(values["Disability"]), values["Type"], int(values["Current"]))
+            sg.popup("Customer updated")
+
+
+def updateOwnerDetailsGUI(sg, mydatabase):  
+
+    Customers = []
+    CustomerIDs = []
+    CarReg = []
+    Current = []
+
+    AllNames = mydatabase.viewCustomers()
+    AllCars = mydatabase.viewOwners()
+
+    for i in AllNames:
+        Customers.append([i[1], i[2]])
+        CustomerIDs.append(i[0])
+
+    for i in AllCars:
+        CarReg.append(i[1])
+        Current.append(i[3])
+
+
+    layout = [  [sg.Text("Car reg"), sg.Combo(CarReg, expand_x=True,key="Reg", enable_events=True)],
+                [sg.Text("Owner"), sg.Combo(Customers, expand_x=True, key="Owner")],
+                [sg.Checkbox("Current?", expand_x=True, key="Current")], 
+                [sg.Button('Update')] 
+            ]
+
+    window = sg.Window('Parking DB', layout)
+
+    # Event loop
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if event == 'Reg':
+            nameIndex = CarReg.index(values["Reg"])
+            window["Current"].update(Current[nameIndex])
+            window["Owner"].update(Customers[nameIndex])
+
+
+        if event == 'Update':
+            mydatabase.UpdateOwner(values["Reg"], CustomerIDs[Customers.index(values["Owner"])], int(values["Current"]))
+            sg.popup("Owner updated")
+
+
 import PySimpleGUI as sg
 import os.path
+import importStarting
+import GuiElements
+from dbClass import DB 
     
 fileExists = os.path.isfile('../data/parking.db')
 
@@ -490,7 +633,7 @@ mydatabase.openDb()
 
 print(fileExists)
 
-importStartingData(fileExists, mydatabase)
+importStarting.importStartingData(fileExists, mydatabase)
 
 sg.theme('DarkAmber') 
 
@@ -501,7 +644,8 @@ sg.theme('DarkAmber')
 layout = [  [sg.Text("Please pick an option")],
             [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('Add space'), sg.Button('Add term')],
             [sg.Button('Make sale'), sg.Button('Assign owner')],
-            [sg.Button('exit')]
+            [sg.Button('Update car'), sg.Button('Update customer'), sg.Button('Update owner')],
+            [sg.Button('Exit')]
         ]
 
 
@@ -510,26 +654,35 @@ window = sg.Window('Parking DB', layout)
 # Event loop
 while True:
     event, values = window.read()
-    if event == sg.WIN_CLOSED or event == 'exit':
+    if event == sg.WIN_CLOSED or event == 'Exit':
         break
 
     if event == 'Add car':
-        insertCarGUI(sg, mydatabase)
+        GuiElements.insertCarGUI(sg, mydatabase)
 
     if event == 'Add customer':
-        insertCustomerGUI(sg, mydatabase)
+        GuiElements.insertCustomerGUI(sg, mydatabase)
 
     if event == 'Add space':
-        insertSpaceGUI(sg, mydatabase)
+        GuiElements.insertSpaceGUI(sg, mydatabase)
 
     if event == 'Add term':
-        insertTermGUI(sg, mydatabase)
+        GuiElements.insertTermGUI(sg, mydatabase)
 
     if event == 'Make sale':
-        makeSaleGui(sg, mydatabase)
+        GuiElements.makeSaleGui(sg, mydatabase)
 
     if event == 'Assign owner':
-        assignOwnerGUI(sg, mydatabase)
+        GuiElements.assignOwnerGUI(sg, mydatabase)
+
+    if event == 'Update car':
+        GuiElements.updateCarDetailsGUI(sg, mydatabase)
+    
+    if event == 'Update customer':
+        GuiElements.updateCustomerDetailsGUI(sg, mydatabase)
+
+    if event == 'Update owner':
+        GuiElements.updateOwnerDetailsGUI(sg, mydatabase)
 
 mydatabase.closeDb()
 window.close()
