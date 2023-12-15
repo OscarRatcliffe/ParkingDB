@@ -21,7 +21,7 @@ A basic database for a parking lot built using python and SQL lite
 
 ### Beta release v0.2
 
-- [ ] Finish adding DB methods
+- [x] Finish adding DB methods
 - [ ] Create all GUI elements
     - [x] Update car details
     - [x] Update car owner details
