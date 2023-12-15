@@ -25,14 +25,18 @@ A basic database for a parking lot built using python and SQL lite
 - [ ] Create all GUI elements
     - [x] Update car details
     - [ ] Update car owner details
-    - [ ] Update customer details
+    - [x] Update customer details
     - [ ] View DB fields
 
 ### Stable release v1.0
 
 - [ ] Unit tests
+
+### Stable release V1.1
+
 - [ ] Refactor 
     - [ ] GuiElements
+- [ ] Print out sticker for car
 
 # Methods to add    
 ## Pre existing    
@@ -52,7 +56,7 @@ A basic database for a parking lot built using python and SQL lite
 - [x] Import spaces.txt into the DB
 
 ### Later
-- [ ] Avaliable spaces (Outer join query)
+- [x] Avaliable spaces (Outer join query)
 - [ ] Output sticker
 - [ ] Revenue in given time
 

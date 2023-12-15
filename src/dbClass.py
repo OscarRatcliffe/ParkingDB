@@ -110,6 +110,5 @@ class DB:
         self.conn.commit()
     
     def UpdateCustomer(self, rqsurname, rqforename, rqdisability, rqtype, rqcurrent):
-        self.cur.execute("UPDATE tbl_customers disabled = ?, type = ?, current = ? WHERE surname = ? AND forename = ?",(rqdisability, rqtype, rqcurrent, rqsurname, rqforename))
+        self.cur.execute("UPDATE tbl_customers SET disabled = ?, type = ?, current = ? WHERE surname = ? AND forename = ?",(rqdisability, rqtype, rqcurrent, rqsurname, rqforename))
         self.conn.commit()
-        

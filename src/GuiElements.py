@@ -222,7 +222,7 @@ def assignOwnerGUI(sg, mydatabase):
             except (sqlite3.IntegrityError):
                 sg.popup("Skipping value - Already exists in DB")
 
-def updateCarDetailsGUI(sg, mydatabase):  # TODO
+def updateCarDetailsGUI(sg, mydatabase): 
 
     carRegs = []
     carMakes = []
@@ -278,9 +278,9 @@ def updateCustomerDetailsGUI(sg, mydatabase):  # TODO
 
 
     layout = [  [sg.Text("Name"), sg.Combo(Name, expand_x=True,key="Name", enable_events=True)],
-                [sg.Text("Disability"), sg.InputText(expand_x=True, key="Disability")], # TODO change to combo
-                [sg.Text("Type"), sg.InputText(expand_x=True, key="Type")],
-                [sg.Text("Current"), sg.InputText(expand_x=True, key="Current")],
+                [sg.Text("Type"), sg.Combo(["Student", "Staff"], expand_x=True, key="Type")],
+                [sg.Checkbox("Disabled?", expand_x=True, key="Disability")], 
+                [sg.Checkbox("Current?", expand_x=True, key="Current")], 
                 [sg.Button('Update')] 
             ]
 
@@ -300,5 +300,5 @@ def updateCustomerDetailsGUI(sg, mydatabase):  # TODO
             window["Current"].update(current[nameIndex])
 
         if event == 'Update':
-            mydatabase.UpdateCustomer(values["Name"][0], values["Name"][1], values["Disability"], values["Type"], values["Current"])
-            sg.popup("Car updated")
+            mydatabase.UpdateCustomer(values["Name"][0], values["Name"][1], int(values["Disability"]), values["Type"], int(values["Current"]))
+            sg.popup("Customer updated")
