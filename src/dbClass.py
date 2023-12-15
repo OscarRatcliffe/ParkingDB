@@ -112,3 +112,7 @@ class DB:
     def UpdateCustomer(self, rqsurname, rqforename, rqdisability, rqtype, rqcurrent):
         self.cur.execute("UPDATE tbl_customers SET disabled = ?, type = ?, current = ? WHERE surname = ? AND forename = ?",(rqdisability, rqtype, rqcurrent, rqsurname, rqforename))
         self.conn.commit()
+        
+    def UpdateOwner(self, rqcar_reg, rqcustomer_sold_id, rqcurrent_car):
+        self.cur.execute("UPDATE tbl_owners SET car_reg = ?, current_car = ? WHERE customer_sold_id = ?",(rqcar_reg, rqcurrent_car, rqcustomer_sold_id))
+        self.conn.commit()

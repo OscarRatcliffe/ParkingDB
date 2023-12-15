@@ -261,7 +261,7 @@ def updateCarDetailsGUI(sg, mydatabase):
             sg.popup("Car updated")
 
 
-def updateCustomerDetailsGUI(sg, mydatabase):  # TODO
+def updateCustomerDetailsGUI(sg, mydatabase):  
 
     Name = []
     disability = []
@@ -302,3 +302,48 @@ def updateCustomerDetailsGUI(sg, mydatabase):  # TODO
         if event == 'Update':
             mydatabase.UpdateCustomer(values["Name"][0], values["Name"][1], int(values["Disability"]), values["Type"], int(values["Current"]))
             sg.popup("Customer updated")
+
+
+def updateOwnerDetailsGUI(sg, mydatabase):  
+
+    Customers = []
+    CustomerIDs = []
+    CarReg = []
+    Current = []
+
+    AllNames = mydatabase.viewCustomers()
+    AllCars = mydatabase.viewOwners()
+
+    for i in AllNames:
+        Customers.append([i[1], i[2]])
+        CustomerIDs.append(i[0])
+
+    for i in AllCars:
+        CarReg.append(i[1])
+        Current.append(i[3])
+
+
+    layout = [  [sg.Text("Car reg"), sg.Combo(CarReg, expand_x=True,key="Reg", enable_events=True)],
+                [sg.Text("Owner"), sg.Combo(Customers, expand_x=True, key="Owner")],
+                [sg.Checkbox("Current?", expand_x=True, key="Current")], 
+                [sg.Button('Update')] 
+            ]
+
+    window = sg.Window('Parking DB', layout)
+
+    # Event loop
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+
+        if event == 'Reg':
+            nameIndex = CarReg.index(values["Reg"])
+            window["Current"].update(Current[nameIndex])
+            window["Owner"].update(Customers[nameIndex])
+
+
+        if event == 'Update':
+            mydatabase.UpdateOwner(values["Reg"], CustomerIDs[Customers.index(values["Owner"])], int(values["Current"]))
+            sg.popup("Owner updated")
+
