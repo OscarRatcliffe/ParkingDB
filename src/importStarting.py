@@ -6,7 +6,7 @@ def importStartingData(fileExists, mydatabase):
 
         print("Adding starting data")
 
-        f = open("data/spaces_updated.txt", "r")
+        f = open("../data/spaces_updated.txt", "r")
 
         for i in f:
             mydatabase.insertSpace(str(i), 0)
@@ -16,7 +16,7 @@ def importStartingData(fileExists, mydatabase):
         # --------------
         # Importing cars
         # --------------
-        with open("data/terms.csv", newline="") as csvfile:
+        with open("../data/terms.csv", newline="") as csvfile:
 
             reader = csv.reader(csvfile)
             for row in reader:
@@ -26,7 +26,7 @@ def importStartingData(fileExists, mydatabase):
                 studentPrice = row[2]
                 disabledPrice = row[3]
 
-        with open("data/starting_data.csv", newline="") as csvfile:
+        with open("../data/starting_data.csv", newline="") as csvfile:
 
             knownCars = []
             knownCustomers = []

@@ -17,7 +17,7 @@ print(fileExists)
 
 importStarting.importStartingData(fileExists, mydatabase)
 
-sg.theme('DarkAmber') 
+sg.theme('DarkAmber')  
 
 # -----------
 # Main window

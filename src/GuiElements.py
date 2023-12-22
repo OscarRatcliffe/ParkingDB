@@ -241,7 +241,7 @@ def updateCarDetailsGUI(sg, mydatabase):
                 [sg.Text("Car model"), sg.InputText(expand_x=True, key="CarModel")],
                 [sg.Button('Update')] 
             ]
-
+    
     window = sg.Window('Parking DB', layout)
 
     # Event loop
