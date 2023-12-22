@@ -2,9 +2,13 @@ import csv
 import PySimpleGUI as sg
 
 def importStartingData(fileExists, mydatabase):
-    if fileExists == False:
+    if fileExists == False: #Check if DB already exists
 
         print("Adding starting data")
+
+        # -------------
+        # Import spaces
+        # -------------
 
         f = open("../data/spaces_updated.txt", "r")
 
@@ -13,9 +17,10 @@ def importStartingData(fileExists, mydatabase):
 
         f.close()
 
-        # --------------
-        # Importing cars
-        # --------------
+        # ------------
+        # Import terms
+        # ------------
+
         with open("../data/terms.csv", newline="") as csvfile:
 
             reader = csv.reader(csvfile)
@@ -25,6 +30,10 @@ def importStartingData(fileExists, mydatabase):
                 staffPrice = row[1]
                 studentPrice = row[2]
                 disabledPrice = row[3]
+
+        # ---------------
+        # Import main CSV
+        # ---------------
 
         with open("../data/starting_data.csv", newline="") as csvfile:
 
@@ -42,7 +51,7 @@ def importStartingData(fileExists, mydatabase):
                 if tempCustomerKey in knownCustomers:
                     pass
                 else:
-                    if row[4] == "N":
+                    if row[4] == "N": #Check if disabled
                         mydatabase.insertCustomer(row[1], row[2], 0, row[3], 1)
                     else:
                         mydatabase.insertCustomer(row[1], row[2], 1, row[3], 1)
@@ -60,7 +69,10 @@ def importStartingData(fileExists, mydatabase):
 
                     ownerID += 1
 
+                # ---------------
                 # Calc price paid
+                # ---------------
+
                 if row[4] == "Y":
                     pricePaid = disabledPrice
                 
@@ -83,3 +95,4 @@ def importStartingData(fileExists, mydatabase):
                     knownSales.append(tempSalesKey)
 
                 knownCars.append(row[8])
+

@@ -30,11 +30,9 @@ def insertCarGUI(sg, mydatabase):
 
 def insertCustomerGUI(sg, mydatabase):
 
-    customerTypes = ["Student", "Staff"]
-
     layout = [  [sg.Text("Surname"), sg.InputText(expand_x=True)],
             [sg.Text("Forename"), sg.InputText(expand_x=True)],
-            [sg.Text("Type"), sg.Combo(customerTypes, expand_x=True)],
+            [sg.Text("Type"), sg.Combo(["Student", "Staff"], expand_x=True)],
             [sg.Checkbox("Is disabled?")],
             [sg.Button('Submit')] 
             ]
@@ -88,16 +86,17 @@ def makeSaleGui(sg, mydatabase):
     names = []
     spaces = []
 
-    customerQuery = mydatabase.view("tbl_customers")
-
-    for i in customerQuery:
+    # Fetch customers
+    for i in mydatabase.view("tbl_customers"):
         names.append(i[2]+ " " + i[1])
 
+    # Fetch spaces 
     for i in mydatabase.view("tbl_spaces"):
         spaces.append(i[0])
 
     for i in mydatabase.view("tbl_terms"):
         termPrices = [i[1], i[2], i[3]] # Overwritting so that only latest version is used
+        lastTerm = i[0]
 
     layout = [  [sg.Text("Space sold"), sg.Combo(spaces, expand_x=True)],
                 [sg.Text("Customer ID"), sg.Combo(names, expand_x=True)],
@@ -120,21 +119,17 @@ def makeSaleGui(sg, mydatabase):
                 # Find index of values
                 # --------------------
 
-                for i in customerQuery:
+                for i in mydatabase.view("tbl_customers"):
                     
                     comboreturnexpected = i[2]+ " " + i[1]
 
                     if values[1] == comboreturnexpected:
                         CustomerID = i[0]
+                        break
 
                 # ---------
                 # Add to DB
                 # ---------
-
-                lastTerm = ""
-
-                for i in mydatabase.view("tbl_terms"):
-                    lastTerm = i[0]
 
                 mydatabase.makeSale(lastTerm, values[0], int(CustomerID), int(values[2]))
                 sg.popup("Sale made")

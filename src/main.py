@@ -17,11 +17,11 @@ print(fileExists)
 
 importStarting.importStartingData(fileExists, mydatabase)
 
-sg.theme('DarkAmber')  
-
 # -----------
 # Main window
 # -----------
+
+sg.theme('DarkAmber')  
 
 layout = [  [sg.Text("Please pick an option")],
             [sg.Button('Add car'), sg.Button('Add customer'), sg.Button('Add space'), sg.Button('Add term')],
