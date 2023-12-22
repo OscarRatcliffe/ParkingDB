@@ -88,15 +88,15 @@ def makeSaleGui(sg, mydatabase):
     names = []
     spaces = []
 
-    customerQuery = mydatabase.viewCustomers()
+    customerQuery = mydatabase.view("tbl_customers")
 
     for i in customerQuery:
         names.append(i[2]+ " " + i[1])
 
-    for i in mydatabase.viewSpaces():
+    for i in mydatabase.view("tbl_spaces"):
         spaces.append(i[0])
 
-    for i in mydatabase.viewTerms():
+    for i in mydatabase.view("tbl_terms"):
         termPrices = [i[1], i[2], i[3]] # Overwritting so that only latest version is used
 
     layout = [  [sg.Text("Space sold"), sg.Combo(spaces, expand_x=True)],
@@ -133,7 +133,7 @@ def makeSaleGui(sg, mydatabase):
 
                 lastTerm = ""
 
-                for i in mydatabase.viewTerms():
+                for i in mydatabase.view("tbl_terms"):
                     lastTerm = i[0]
 
                 mydatabase.makeSale(lastTerm, values[0], int(CustomerID), int(values[2]))
@@ -174,15 +174,15 @@ def assignOwnerGUI(sg, mydatabase):
     carRegs = []
     names = []
 
-    customerQuery = mydatabase.viewCustomers()
+    customerQuery = mydatabase.view("tbl_customers")
 
     for i in customerQuery:
         names.append(i[2]+ " " + i[1])
 
-    for i in mydatabase.viewCarsall():
+    for i in mydatabase.view("tbl_cars"):
         carRegs.append(i[0])
 
-    for i in mydatabase.viewOwners():
+    for i in mydatabase.view("tbl_owners"):
         lastOwnerID = i[0];
 
     layout = [  [sg.Text("Car reg"), sg.Combo(carRegs, expand_x=True)],
@@ -228,7 +228,7 @@ def updateCarDetailsGUI(sg, mydatabase):
     carMakes = []
     carModels = []
 
-    allCars = mydatabase.viewCarsall()
+    allCars = mydatabase.view("tbl_cars")
 
     for i in allCars:
         carRegs.append(i[0])
@@ -268,7 +268,7 @@ def updateCustomerDetailsGUI(sg, mydatabase):
     type = []
     current = []
 
-    allCars = mydatabase.viewCustomers()
+    allCars = mydatabase.view("tbl_customers")
 
     for i in allCars:
         Name.append([i[1], i[2]])
@@ -311,8 +311,8 @@ def updateOwnerDetailsGUI(sg, mydatabase):
     CarReg = []
     Current = []
 
-    AllNames = mydatabase.viewCustomers()
-    AllCars = mydatabase.viewOwners()
+    AllNames = mydatabase.view("tbl_customers")
+    AllCars = mydatabase.view("tbl_owners")
 
     for i in AllNames:
         Customers.append([i[1], i[2]])

@@ -35,23 +35,8 @@ class DB:
     def closeDb(self):
         self.conn.close()   
             
-    def viewCustomers(self):
-        self.cur.execute("SELECT * FROM tbl_customers")
-        rows = self.cur.fetchall()
-        return rows
-    
-    def viewSpaces(self):
-        self.cur.execute("SELECT * FROM tbl_spaces")
-        rows = self.cur.fetchall()
-        return rows
-    
-    def viewTerms(self):
-        self.cur.execute("SELECT * FROM tbl_terms")
-        rows = self.cur.fetchall()
-        return rows
-    
-    def viewOwners(self):
-        self.cur.execute("SELECT * FROM tbl_owners")
+    def view(self, tableName):
+        self.cur.execute("SELECT * FROM " + tableName)
         rows = self.cur.fetchall()
         return rows
     
@@ -73,21 +58,6 @@ class DB:
     def insertCar(self, rqreg, rqmake, rqmodel):
         self.cur.execute("INSERT INTO tbl_cars (reg, make, model) VALUES (?,?,?)",(rqreg, rqmake, rqmodel))
         self.conn.commit()
-
-    def viewCarsall(self):
-        self.cur.execute("SELECT * FROM tbl_cars")
-        rows = self.cur.fetchall()
-        return rows
-    
-    def viewCarsCurrent(self):
-        self.cur.execute("SELECT * FROM tbl_owners WHERE current = 1")
-        rows = self.cur.fetchall()
-        return rows       
-    
-    def viewCarsNotcurrent(self):
-        self.cur.execute("SELECT * FROM tbl_owners WHERE available = 0")
-        rows = self.cur.fetchall()
-        return rows
     
     def markNotcurrent(self, rqreg):
         self.cur.execute("UPDATE tbl_owners SET current = 0 WHERE reg = ? AND current = 1",(rqreg,))
